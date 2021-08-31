@@ -1,1 +1,1 @@
-web: werewolf-slack -p $PORT
+web: werewolf-slack -p $PORT -u https://wwchat.herokuapp.com/

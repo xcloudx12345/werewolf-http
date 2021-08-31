@@ -1,1 +1,1 @@
-web: werewolf-slack $PORT
+web: werewolf-slack -p $PORT

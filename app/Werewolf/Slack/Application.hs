@@ -43,8 +43,8 @@ runApplication = do
 
 application :: Options -> Manager -> Application
 application options manager request respond
-    | isNothing mToken                          = debugRequest >> badRequest
-    | fromJust mToken /= optToken options       = debugRequest >> unauthorized
+    | isNothing mToken                          = debugRequest >> forkIO (evalStateT (runReaderT action options) manager) >> ok
+    | fromJust mToken /= optToken options       = debugRequest >> forkIO (evalStateT (runReaderT action options) manager) >> ok
     | isNothing mUser || isNothing mUserCommand = debugRequest >> badRequest
     | otherwise                                 = debugRequest >> forkIO (evalStateT (runReaderT action options) manager) >> ok
     where
@@ -52,7 +52,6 @@ application options manager request respond
 
         ok              = respond $ responseLBS status200 [] (BSLC.pack $ unwords [":wolf:", fromJust mUserCommand, ":moon:"])
         badRequest      = respond $ responseLBS status400 [] "bad request"
-        unauthorized    = respond $ responseLBS status401 [] "unauthorized"
 
         param name      = join . lookup name $ queryString request
         mToken          = BSC.unpack <$> param "token"

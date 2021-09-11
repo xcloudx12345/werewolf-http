@@ -6,4 +6,4 @@ packages:
 - '.'
 extra-deps:
 - happy-1.19.9@sha256:e794416736049cefc904bba746b5315f8cfb6fd6457a90616eb1f3c8dd47b1ff,4667
-- werewolf
+- werewolf-1.5.2.0
